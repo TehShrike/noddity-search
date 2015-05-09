@@ -1,0 +1,25 @@
+{
+  "name": "noddity-search",
+  "version": "1.0.0",
+  "description": "A lunr-powered search function for Noddity sites",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TehShrike/noddity-search.git"
+  },
+  "keywords": [
+    "noddity",
+    "lunr",
+    "search",
+    "autocomplete"
+  ],
+  "author": "TehShrike",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/TehShrike/noddity-search/issues"
+  },
+  "homepage": "https://github.com/TehShrike/noddity-search"
+}
