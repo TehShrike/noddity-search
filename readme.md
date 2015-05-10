@@ -9,11 +9,11 @@ Part of the Noddity ecosystem, lulz
 ```js
 
 var fields = {
-	superSecretKeywordInMyMetadata: 10
+	customParameterInMyMetadata: 10
 }
 
 var searcher = require('noddity-search')
-var search = searcher(noddityButler, superSecretKeywordInMyMetadata)
+var search = searcher(noddityButler, fields)
 
 search('butts', function(err, posts) {
 	posts.forEach(function(post) {
