@@ -1,6 +1,6 @@
 {
   "name": "noddity-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lunr-powered search function for Noddity sites",
   "main": "index.js",
   "scripts": {
