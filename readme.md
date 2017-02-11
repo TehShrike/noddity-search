@@ -1,5 +1,7 @@
 # noddity-search
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/TehShrike/noddity-search.svg)](https://greenkeeper.io/)
+
 Making it easy for you to add search functionality to your [Noddity](http://noddity.com/) blag or server.
 
 Part of the Noddity ecosystem, lulz
