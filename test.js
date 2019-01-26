@@ -1,18 +1,26 @@
-var Butler = require('noddity-butler')
-var level = require('level-mem')
-var searcher = require('./')
+const Butler = require(`noddity-butler`)
+const level = require(`level-mem`)
+const fsRetrieval = require(`noddity-fs-retrieval`)
+const { createIndex, searchIndex } = require(`./`)
 
-var butler = new Butler('http://joshduff.com/content/', level('teehee'))
+async function main() {
+	const butler = new Butler(fsRetrieval(`/Users/josh/code/KayserCommentary/Markdown/Web`), level(`teehee`))
 
-var search = searcher(butler, {
-	title: 100,
-	categories: 5
-})
+	console.time(`Building index from disk`)
 
-butler.getPosts(function(err, posts) {
-	search('query mysql', function(err, posts) {
-		posts.forEach(function(post) {
-			console.log(post.filename)
-		})
+	const index = await createIndex(butler, {
+		title: 100,
+		categories: 5,
 	})
-})
+
+	console.timeEnd(`Building index from disk`)
+
+	console.time(`Searching`)
+
+	const results = await searchIndex(butler, index, `david sexual sin`)
+
+	console.timeEnd(`Searching`)
+	results.forEach(post => console.log(post.metadata.title, `---`, post.filename))
+}
+
+main()
