@@ -4,7 +4,7 @@ const fsRetrieval = require(`noddity-fs-retrieval`)
 const { createIndex, searchIndex } = require(`./`)
 
 async function main() {
-	const butler = new Butler(fsRetrieval(`/Users/josh/code/KayserCommentary/Markdown/Web`), level(`teehee`))
+	const butler = new Butler(fsRetrieval(`/Users/joshduff/code/KayserCommentary/Markdown/Web`), level(`teehee`))
 
 	console.time(`Building index from disk`)
 
@@ -17,7 +17,7 @@ async function main() {
 
 	console.time(`Searching`)
 
-	const results = await searchIndex(butler, index, `david sexual sin`)
+	const results = await searchIndex(butler, index, `festivals`)
 
 	console.timeEnd(`Searching`)
 	results.forEach(post => console.log(post.metadata.title, `---`, post.filename))

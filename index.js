@@ -1,4 +1,4 @@
-const lunr = require(`lunr`)
+const FlexSearch = require(`flexsearch`)
 const pify = require(`pify`)
 
 const defaultFields = {
@@ -6,15 +6,23 @@ const defaultFields = {
 	content: 1,
 }
 
-const loadIndexObject = indexData => lunr.Index.load(indexData)
+
 
 module.exports = {
 	async createIndex(basicButler, fields) {
 		const butler = pify(basicButler)
 
+		const { toId, toFile } = makeIdJuggler()
+
 
 		const posts = await butler.getPosts()
 		const indexableDocuments = posts.map(transformPostForIndexing)
+
+		const index = new FlexSearch({
+			encode: `advanced`,
+			tokenize: `strict`,
+			depth: 5,
+		})
 
 		return lunr(function() {
 			const lunrIndex = this
@@ -30,13 +38,13 @@ module.exports = {
 		const getPost = pify(basicButler.getPost)
 		return Promise.all(index.search(term).map(result => getPost(result.ref)))
 	},
-	serializeIndex(index) {
-		return JSON.stringify(index)
-	},
-	loadIndexObject,
-	deserializeIndex(string) {
-		return loadIndexObject(JSON.parse(string))
-	},
+	// serializeIndex(index) {
+	// 	return JSON.stringify(index, null, `\t`)
+	// },
+	// loadIndexObject,
+	// deserializeIndex(string) {
+	// 	return loadIndexObject(JSON.parse(string))
+	// },
 }
 
 const setUpIndex = (lunrIndex, fields) => {
@@ -53,4 +61,30 @@ const transformPostForIndexing = post => {
 	delete indexableObject.metadata
 
 	return post
+}
+
+const makeIdJuggler = () => {
+	let nextId = 0
+	const idToFile = new Map()
+	const fileToId = new Map()
+
+	return {
+		toId(filename) {
+			if (fileToId.has(filename)) {
+				return fileToId.get(filename)
+			} else {
+				const id = nextId
+				nextId += 1
+				idToFile.set(id, filename)
+				fileToId.set(filename, id)
+			}
+		},
+		toFile(id) {
+			if (!idToFile.has(id)) {
+				throw new Error(`No file found for id ${ id }`)
+			}
+
+			return idToFile.get(id)
+		},
+	}
 }
